@@ -1,0 +1,105 @@
+{
+    "Version": 1,
+    "UUID": "df1c0cd6-76f1-11e8-a54a-0242ac110002",
+    "Name": "holostorage",
+    "Properties": {
+        "description": "universal data storage application",
+        "language": "en"
+    },
+    "RequiresVersion": 26,
+    "DHTConfig": {
+        "HashType": "sha2-256",
+        "RedundancyFactor": 0
+    },
+    "Progenitor": {
+        "Identity": "",
+        "PubKey": null
+    },
+    "Zomes": [
+        {
+            "Name": "storage",
+            "Description": "universal data storage",
+            "CodeFile": "storage.js",
+            "RibosomeType": "js",
+            "BridgeFuncs": [],
+            "Config": null,
+            "BridgeFuncs": ["addRecord","updateRecord","deleteRecord","filterRecord","admin"],
+            "Entries": [
+              {
+                  "Name": "storage_links",
+                  "DataFormat": "links",
+                  "Exposure": "public",
+                  "Sharing": "public"
+              },
+              {
+                  "Name": "records",
+                  "DataFormat": "string",
+                  "Exposure": "public",
+                  "Sharing": "public"
+              }
+            ],
+            "Functions": [
+                {
+                    "Name": "addRecord",
+                    "CallingType": "json",
+					"Exposure": "public",
+                    "Sharing": "public"
+                },
+                {
+                    "Name": "updateRecord",
+                    "CallingType": "json",
+					"Exposure": "public",
+					"Sharing": "public"
+                },
+                {
+                    "Name": "deleteRecord",
+                    "CallingType": "json",
+					"Exposure": "public",
+					"Sharing": "public"
+                },
+                {
+                    "Name": "getRecord",
+                    "CallingType": "json",
+					"Exposure": "public",
+					"Sharing": "public"
+                },
+                {
+                    "Name": "filterRecords",
+                    "CallingType": "json",
+					"Exposure": "public",
+					"Sharing": "public"
+                },
+                {
+                    "Name": "query",
+                    "CallingType": "json",
+					"Exposure": "public",
+					"Sharing": "public"
+                },
+                {
+                    "Name": "getRecordByKey",
+                    "CallingType": "json",
+					"Exposure": "public",
+					"Sharing": "public"
+                },
+                {
+                    "Name": "admin",
+                    "CallingType": "json",
+					"Exposure": "public",
+					"Sharing": "public"
+                },
+                {
+                    "Name": "regist",
+                    "CallingType": "json",
+					"Exposure": "public",
+					"Sharing": "public"
+                },
+                {
+                    "Name": "login",
+                    "CallingType": "json",
+					"Exposure": "public",
+					"Sharing": "public"
+                }
+            ]
+        }
+    ]
+}

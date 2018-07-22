@@ -1,0 +1,270 @@
+{
+    "Tests": [
+        {
+            "Convey": "addRecord to emty database",
+            "Zome": "storage",
+            "FnName": "addRecord",
+            "Exposure": "public",
+            "Input": {"recType":"rec1","id":0,"title":"title"},
+            "Output": {"status":"OK", "newId":1,"key":"%h2%"}
+        },
+        {
+            "Convey": "addRecord",
+            "Zome": "storage",
+            "FnName": "addRecord",
+            "Exposure":"public",
+            "Input": {"recType":"rec1","id":0,"title":"title2"},
+            "Output": {"status":"OK", "newId":2,"key":"%h2%"}
+        },
+        {
+            "Convey": "updateRecord",
+            "Zome": "storage",
+            "FnName": "updateRecord",
+            "Exposure": "public",
+            "Input": {"recType":"rec1","id":1,"title":"title1"},
+            "Output": {"status":"OK", "newId":1, "key":"%h2%"}
+        },
+        {
+            "Convey": "query simple",
+            "Zome": "storage",
+            "FnName": "query",
+            "Exposure": "public",
+            "Input": {
+				"select":["id","title"],
+				"from":"rec1",
+				"where":"(id > 0) AND (title <> \"\")",
+				"order":["none"],
+				"limit":[0,"all"]
+			},
+            "Output": {"status":"OK", "total":2, "records":[[2,"title2"],[1,"title1"]]}
+        },
+        {
+            "Convey": "query sort desc",
+            "Zome": "storage",
+            "FnName": "query",
+            "Exposure": "public",
+            "Input": {
+				"select":["id","title"],
+				"from":"rec1",
+				"where":"(id > 0) AND (REGEXP(title,\"itle\"))",
+				"order":["title","DESC"],
+				"limit":[0,"all"]
+			},
+            "Output": {"status":"OK", "total":2, "records":[[2,"title2"],[1,"title1"]]}
+        },
+        {
+            "Convey": "query limit",
+            "Zome": "storage",
+            "FnName": "query",
+            "Exposure": "public",
+            "Input": {
+				"select":["id","title"],
+				"from":"rec1",
+				"where":"(id > 0) AND (REGEXP(title,\"itle\"))",
+				"order":["title","DESC"],
+				"limit":[1,1]
+			},
+            "Output": {"status":"OK", "total":2, "records":[[1,"title1"]]}
+        },
+        {
+            "Convey": "query complex",
+            "Zome": "storage",
+            "FnName": "query",
+            "Exposure": "public",
+            "Input": {
+				"select":["id","title"],
+				"from":"rec1",
+				"where":"(NOT (id = 3)) OR (id = title) OR (id > 0) AND (REGEXP(title,\"itle\")) AND (title <> \"valami\")",
+				"order":["title","DESC"],
+				"limit":[1,1]
+			},
+            "Output": {"status":"OK", "total":2, "records":[[1,"title1"]]}
+        },
+        {
+            "Convey": "query syntax error",
+            "Zome": "storage",
+            "FnName": "query",
+            "Exposure": "public",
+            "Input": {
+				"select":["id","title"],
+				"from":"rec1",
+				"where":"(NOT id)( > <> 3 OR x / 2)",
+				"order":["title","DESC"],
+				"limit":[1,1]
+			},
+            "Output": {"status":"SYNTAX_ERROR", "total":0, "records":[]}
+        },
+        
+        {
+            "Convey": "query not found",
+            "Zome": "storage",
+            "FnName": "query",
+            "Exposure": "public",
+            "Input": {
+				"select":["id","title"],
+				"from":"rec1",
+				"where":"id = 1",
+				"order":["title","DESC"],
+				"limit":[2,1]
+			},
+            "Output": {"status":"OK", "total":1, "records":[]}
+        },
+        {
+            "Convey": "getRecord",
+            "Zome": "storage",
+            "FnName": "getRecord",
+            "Exposure": "public",
+            "Input": {"recType":"rec1","id":1},
+            "Output": {"status":"OK","record":{"id":1,"recType":"rec1","title":"title1"}}
+        },
+        {
+            "Convey": "getRecord not found",
+            "Zome": "storage",
+            "FnName": "getRecord",
+            "Exposure":"public",
+            "Input": {"recType":"rec1","id":3},
+            "Output": {"status":"NOT_FOUND","record":{}}
+        },
+        {
+            "Convey": "updateRecord not found",
+            "Zome": "storage",
+            "FnName": "updateRecord",
+            "Exposure":"public",
+            "Input": {"recType":"rec1","id":3,"title":"title1"},
+            "Output": {"status":"NOT_FOUND"}
+        },
+        {
+            "Convey": "deletetRecord not found",
+            "Zome": "storage",
+            "FnName": "deleteRecord",
+            "Exposure":"public",
+            "Input": {"recType":"rec1","id":3,"title":"title1"},
+            "Output": {"status":"NOT_FOUND"}
+        },
+        {
+            "Convey": "deletetRecord 1",
+            "Zome": "storage",
+            "FnName": "deleteRecord",
+            "Exposure":"public",
+            "Input": {"recType":"rec1","id":1,"title":"title1"},
+            "Output": {"status":"OK"}
+        },
+        {
+            "Convey": "deletetRecord 2",
+            "Zome": "storage",
+            "FnName": "deleteRecord",
+            "Exposure":"public",
+            "Input": {"recType":"rec1","id":2,"title":"title1"},
+            "Output": {"status":"OK"}
+        },
+        {
+            "Convey": "getRecord empty database",
+            "Zome": "storage",
+            "FnName": "getRecord",
+            "Exposure":"public",
+            "Input": {"recType":"rec1","id":1},
+            "Output": {"status":"NOT_FOUND","record":{}}
+        },
+        {
+            "Convey": "updateRecord empty database",
+            "Zome": "storage",
+            "FnName": "updateRecord",
+            "Exposure":"public",
+            "Input": {"recType":"rec1","id":1,"title":"title1"},
+            "Output": {"status":"NOT_FOUND"}
+        },
+        {
+            "Convey": "deletetRecord empty database",
+            "Zome": "storage",
+            "FnName": "deleteRecord",
+            "Exposure":"public",
+            "Input": {"recType":"rec1","id":1,"title":"title1"},
+            "Output": {"status":"NOT_FOUND"}
+        },
+        {
+            "Convey": "admin get OK",
+            "Zome": "storage",
+            "FnName": "admin",
+            "Exposure":"public",
+            "Input": {"action":"get", "psw":"123456", "config":{}},
+            "Output": {"status":"OK", "config":{"id":1, "enabled":[], "psw":"123456", "recType":"config"}}
+        },
+        {
+            "Convey": "admin set, psw change OK",
+            "Zome": "storage",
+            "FnName": "admin",
+            "Exposure":"public",
+            "Input": {"action":"set", "psw":"123456", "config":{"id":1, "enabled":["abcd","xyz"], "psw":"valami", "recType":"config"}},
+            "Output": {"status":"OK", "config":{"id":1, "enabled":["abcd","xyz"], "psw":"valami", "recType":"config"}}
+        },
+        {
+            "Convey": "admin set, wrong password",
+            "Zome": "storage",
+            "FnName": "admin",
+            "Exposure":"public",
+            "Input": {"action":"set", "psw":"xyz", "config":{"id":1, "enabled":["abcd","xyz"], "psw":"valami", "recType":"config"}},
+            "Output": {"status":"ACCESS_VIOLATION", "config":{}}
+        },
+        {
+            "Convey": "admin get wrong password",
+            "Zome": "storage",
+            "FnName": "admin",
+            "Exposure":"public",
+            "Input": {"action":"get", "psw":"123456", "config":{}},
+            "Output": {"status":"ACCESS_VIOLATION", "config":{}}
+        },
+        {
+            "Convey": "admin get by new password OK",
+            "Zome": "storage",
+            "FnName": "admin",
+            "Exposure":"public",
+            "Input": {"action":"get", "psw":"valami", "config":{}},
+            "Output": {"status":"OK", "config":{"id":1, "enabled":["abcd","xyz"], "psw":"valami", "recType":"config"}}
+        },
+        {
+            "Convey": "regis new user",
+            "Zome": "storage",
+            "FnName": "regist",
+            "Exposure":"public",
+            "Input": {"nick":"user1", "psw":"valami"},
+            "Output": {"status":"OK", "id":1, "key":"%h2%"}
+        },
+        {
+            "Convey": "regis new user - exists",
+            "Zome": "storage",
+            "FnName": "regist",
+            "Exposure":"public",
+            "Input": {"nick":"user1", "psw":"valamimás"},
+            "Output": {"status":"NICK_EXISTS", "id":0, "key":""}
+        },
+        {
+            "Convey": "login user",
+            "Zome": "storage",
+            "FnName": "login",
+            "Exposure":"public",
+            "Input": {"nick":"user1", "psw":"valami"},
+            "Output": {"status":"OK", "id":1, "key":"%h2%"}
+        },
+        {
+            "Convey": "login user - nick error",
+            "Zome": "storage",
+            "FnName": "login",
+            "Exposure":"public",
+            "Input": {"nick":"user2", "psw":"valami"},
+            "Output": {"status":"ACCESS_VIOLATION", "id":0, "key":""}
+        },
+        {
+            "Convey": "login user - psw error",
+            "Zome": "storage",
+            "FnName": "login",
+            "Exposure":"public",
+            "Input": {"nick":"user1", "psw":"valamimás"},
+            "Output": {"status":"ACCESS_VIOLATION", "id":0, "key":""}
+        }
+    ],
+    "Identity": "",
+    "Fixtures": {
+        "Agents": null
+    },
+    "Benchmark": false
+}
