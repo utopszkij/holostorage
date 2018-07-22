@@ -2,7 +2,7 @@
 
 >státusz: pre-alpha
 
-[Angol nyelvű readmy](https://github.com/utopszkij/holostorage/blob/master/readmy.md) 
+[Angol nyelvű readmy](https://github.com/utopszkij/holostorage/blob/master/readme.md) 
 
 ## 1. Áttekintés
 A holochain P2P rendszer elosztott adat tároló lánca (DHT) applikációhoz kötött. Ha az applikáció kódjában bármi megváltozik, akkor az „leválik” a korábban használt DHT adat tároló láncról és új (üres) adat tárolóval működik tovább. Ez biztonsági szempontból helyes, indokolt. Viszont egy már üzembe helyezett rendszerben a program fejlesztést, hibajavítást  nagyon megnehezíti, hiszen minden módosításnál elvesznek az addig tárolt adatok.
@@ -155,7 +155,7 @@ $ hcadmin join <holochain applikációk gyűjtő könyvtára>/holostorage holost
 ```
 a hívó MVC DNA Hash konfigurálása az admin funkció segitségével.
 
-###6.2 Használata a hívó MVC rétegben
+### 6.2 Használata a hívó MVC rétegben
 Holochain híd kiépítése:
 ```
 $ hcadmin bridge <MVC chain név> holostorage <hívó zome>                              

@@ -2,7 +2,7 @@
 
 >status: pre-alpha
 
-#### [Hungarian readmy](https://github.com/utopszkij/holostorage/blob/master/readme-hu.md) 
+#### [Hungarian readme](https://github.com/utopszkij/holostorage/blob/master/readme-hu.md) 
 
 ## 1. Overview
 The holochain P2P system is bound to a distributed data storage chain (DHT) application. If anything changes in the application code, it will "disconnect" from the previously used DHT data storage chain and continue to work with a new (empty) data repository. This is safe from the point of view of security. However, in a system already installed, the program development and bug fixes are made very difficult, since any changes will cose the data stored so far be lost.
