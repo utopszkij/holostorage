@@ -1,10 +1,10 @@
-#HOLOSTORAGE universal data storage layer for holochain applications
+# HOLOSTORAGE universal data storage layer for holochain applications
 
 >status: pre-alpha
 
-####[Hungarian readmy](https://github.com/utopszkij/holostorage/blob/master/readme-hu.md) 
+#### [Hungarian readmy](https://github.com/utopszkij/holostorage/blob/master/readme-hu.md) 
 
-##1. Overview
+## 1. Overview
 The holochain P2P system is bound to a distributed data storage chain (DHT) application. If anything changes in the application code, it will "disconnect" from the previously used DHT data storage chain and continue to work with a new (empty) data repository. This is safe from the point of view of security. However, in a system already installed, the program development and bug fixes are made very difficult, since any changes will cose the data stored so far be lost.
 
 It is therefore advisable to split the applications into two parts:
@@ -22,11 +22,11 @@ In the HOLOSTORAGE layer, stored in an administrator-managed data table, the "va
 
 Since holochain nodes allow system owners to access the DHT data stored there, it is advisable to sto
 
-##2. HOLOSTORAGE properties
+## 2. HOLOSTORAGE properties
 - holochain bridge routines,
 - calling holochain DNA.Hash check (administrator-accessible list page),
 - HOLOSTORAGE is an encrypted data storage based on "App.Key.Hash"
-##3. HOLOSTORAGE functions
+## 3. HOLOSTORAGE functions
 - record writing with auto ID training,
 - record reading by ID,
 - record deletion by ID,
@@ -36,7 +36,7 @@ Since holochain nodes allow system owners to access the DHT data stored there, i
 - user registration
 - user login
 - record reading by Key
-##4. Syntax and semantics of call functions
+## 4. Syntax and semantics of call functions
 Each function looks like an object as an input parameter and returns an object as an output.
 Properties of the "record" object are only string, number, boolean, array variables. Function, object type property is not allowed here. It is a compulsory element for every "record"
 "**Id**" - record unique identifier number (generated automatically when applied) and a
@@ -47,26 +47,26 @@ The following marking is used below:
 
 expected object as input -> return object
 
-###4.1 Storage of a new record, automatic "id" generation.
+### 4.1 Storage of a new record, automatic "id" generation.
 **addRecord** 
 	record --> {status:”OK|errorMsg”, newId:number,key:”….”}
 
 
-###4.2 Modifying an existing record
+### 4.2 Modifying an existing record
 **updateRecord**
 	record --> {status:”OK|errorMsg”}
 
 
 
-###4.3 Deleting an existing record
+### 4.3 Deleting an existing record
 **deleteRecord**	
 	record --> {status:”OK|errorMsg”}
 
-###4.4 Access an existing record based on "id"
+### 4.4 Access an existing record based on "id"
 **getRecord** 
 	{recType:”...”,id:number} --> {status:”OK|errorMsg”, record:{…}}
 
-###4.5 Accessing a record set using a filter criterion, in a specified order, using a limit and starting sequence number for a query (slightly) similar to SQL query syntax
+### 4.5 Accessing a record set using a filter criterion, in a specified order, using a limit and starting sequence number for a query (slightly) similar to SQL query syntax
 **query**
 	{select:[”fieldName”,”fieldName”, ...],
 	  from:”recType”,
@@ -86,7 +86,7 @@ For the "limit" report (see myssql limitstart and limit operation).
 The "total" returned value was received without taking into account "limit [0] and limit [1]"
 number of records.
 
-###4.6 Config record query, modification
+### 4.6 Config record query, modification
 **admin**	
 	{action:”set|get”, psw:”….”, config:{configRecord}} →
 		 (status:”OK|errorMsg”,config:{configRecord}}  
@@ -96,19 +96,19 @@ configRecord:
 	{"id":1, "enabled":[dnaHash, dnaHash, ...], "psw":"…"}
 ```
 
-###4.7 User registration
+### 4.7 User registration
 **regist**
 	{”nick”:”...”,”psw”:”...”}  → {”satus”:”OK|errorMsg”,”id”:number,”key”:”...”}
 
-###4.8 User login
+### 4.8 User login
 **login**
 	{”nick”:”...”,”psw”:”...”}  → {”satus”:”OK|errorMsg”,”id”:number,”key”:”...”}
 
-###4.9 Rekord read by  key
+### 4.9 Rekord read by  key
 **getRecordByKey**
 	{”key”:”….”} → {”status”:”OK|errorMsg”,”record”:{...}}
 
-##5. The WHERE condition syntax for query calls
+## 5. The WHERE condition syntax for query calls
 EBNF syntax definition:
 see:
 https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form
@@ -147,8 +147,8 @@ field1 > 22 AND field3 > 4
 
 REGEXP(field1,”abc”) OR field4 > field1
 
-##6. Installation and use
-###6.1 Install HOLOSTORAGE in a holochain node:
+## 6. Installation and use
+### 6.1 Install HOLOSTORAGE in a holochain node:
 ```
 $ cd <holochain applications root>                                                         
 $ git clone http://github.com/utopszkij/holostorage
@@ -156,7 +156,7 @@ $ hcadmin join <holochain applications root>/holostorage holostorage
 
 config the MVC DNA Hash by admin function
 ```
-###6.2 Use in caller MVC layer: 
+### 6.2 Use in caller MVC layer: 
 Create holochain bridge:
 $ hcadmin bridge <MVC chain name> holostorage <caller zome>                              
 
