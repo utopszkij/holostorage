@@ -173,6 +173,8 @@ command.
 
 Or  get it by „getBridges” API function.
 ```
+## 7 Licence
+GNU/GPL
 
 
 

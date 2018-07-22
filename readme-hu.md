@@ -169,6 +169,8 @@ A <holostorage app.DNA.Hash> értékét a
 $ hcadmin join <holochain applikációk gyűjtő könyvtára>/holostorage holostorage	parancsnál a képernyőre irja a rendszer.
 Illetve a „getBridges” API hívással a javascript kódból is lekérdezhető.
 ```
+## 7 Licensz
+GNU/GPL
 	
 
 
