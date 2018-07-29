@@ -158,10 +158,11 @@ config the MVC DNA Hash by admin function
 ```
 ### 6.2 Use in caller MVC layer: 
 Create holochain bridge:
+```
 $ hcadmin bridge <MVC chain name> holostorage <caller zome>                              
 
 call format in  DNA javascript code:
-```
+
 param = {………..};
 result = bridge(<holostorage app.DNA.Hash>, ”storage”,”functionName”, param);
 

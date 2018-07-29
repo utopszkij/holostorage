@@ -17,6 +17,8 @@
  *   regist         {nick, psw} --> {status, key}
  *   login          {nick, psw} --> {status, key}
  * 
+ * The "config" record can manager only by "admin" function, 
+ * can not  manager by addRecord, updateRecord, getRecord, deleteRecord.
  ****************************************************************** 
  *
  * DHT links structure
@@ -33,6 +35,8 @@
  *
  */
   
+  
+var configEnabled = false;  
 /**********************
  *   system functions *
  **********************/
@@ -153,12 +157,13 @@ function validateLinkPkg(entry_type) { return null }
 	 }    
 	return coded;  
  }
-  
- /**
+
+/**
   * get config data if not exists create it.
   * @return object  {id, modelDNAHash, superAdim, admins, enabled}
   */
  function _getConfig() {
+	configEnabled = true; 
 	var DNAHash = '1234567890';
 	var bridges = getBridges();
 	if (bridges.length > 0) {
@@ -170,59 +175,17 @@ function validateLinkPkg(entry_type) { return null }
     if (res.status == 'NOT_FOUND') {
 		record.recType = 'config';
 		addRecord(record);
+		configEnabled = false; 
 		return record;
 	} else {
+		configEnabled = false; 
 		return res.record;
 	}	
+	configEnabled = false; 
 	return record; 
  }   
- 
-/**
- * check logical expression  
- * @param object 
- * @return bool
- * 
-function _expression(record, expression) {
-	var i = 1;
-	var result = false;
-	var operator = '';
-	while (i < expression.length) {
-		if (expression[i][0] == '?') {
-			if (operator == '') {
-				result = _expression(record, expression[i]);
-			} else if (operator == '&&') {
-				result = result && _expression(record, expression[i]);
-			} else if (operator == '||') {
-				result = result || _expression(record, expression[i]);
-			}	
-		} else if (expression[i][0] == '!') {
-			if (operator == '') {
-				result = !_expression(record, expression[i]);
-			} else if (operator == '&&') {
-				result = result && !_expression(record, expression[i]);
-			} else if (operator == '||') {
-				result = result || !_expression(record, expression[i]);
-			}	
-		} else {
-			if (operator == '') {
-				result = _relation(record, expression[i]);
-			} else if (operator == '&&') {
-				result = result && _relation(record, expression[i]);
-			} else if (operator == '||') {
-				result = result || _relation(record, expression[i]);
-			}	
-		}
-		if (i < (expression.length - 1)) {
-			operator = expression[i+1];
-		}
-		i = i + 2;
-	}
-	if (expression[0] == '!') {
-		result = !result;
-	}
-	return result;
-} 	
-*/
+
+
 
 /**
  * record to array
@@ -679,6 +642,9 @@ function Parser(expression) {
    * @return object
    */ 
   function addRecord(record) {
+	if ((record.recType == 'config') && (configEnabled == false))  {
+			return {"status":"ACCESS_VIOLATION", "newId":0, "key":""};
+	}
 	var maxId = 0;
 	var i = 0;
 	var key = '';
@@ -704,6 +670,8 @@ function Parser(expression) {
 			}
 		}
 		newRec.id = maxId + 1;
+	} else {
+ 	    var result = deleteRecord(record);
 	}
 	key = commit('records', _encode(newRec));
 	if (key instanceof Error ) {
@@ -731,6 +699,9 @@ function Parser(expression) {
    * @return object
    */ 
   function updateRecord(record) {
+      if ((record.recType == 'config') && (configEnabled == false))  {
+			return {"status":"ACCESS_VIOLATION", "newId":0};
+	  }
 	  var result = deleteRecord(record);
 	  if (result.status == 'OK') {
 		result = addRecord(record);
@@ -744,6 +715,9 @@ function Parser(expression) {
    * @return object
    */ 
   function deleteRecord(record) {
+	if ((record.recType == 'config') && (configEnabled == false))  {
+			return {"status":"ACCESS_VIOLATION"};
+	}
 	var recType = record.recType;
 	var linkBase = _getRecTypeKey(recType);
 	var key = '';
@@ -777,11 +751,14 @@ function Parser(expression) {
   }
 
   /** get one record
-   * {"recType":"...","id":###} --> {"status":"oOK|...", "record":{...}}
+   * {"recType":"...","id":###} --> {"status":"OK|...", "record":{...}}
    * @param object param
    * @return object
    */ 
   function getRecord(param) {
+	if ((param.recType == 'config') && (configEnabled == false))  {
+			return {"status":"ACCESS_VIOLATION", record:{}};
+	}
 	var recType = param.recType;
 	var id = param.id;
 	var linkBase = _getRecTypeKey(recType);
@@ -830,6 +807,9 @@ function Parser(expression) {
    * }
    */ 
   function query(param) {
+	if ((param.from == 'config') && (configEnabled == false))  {
+			return {"status":"ACCESS_VIOLATION", "newId":0, "key":""};
+    }
 	var select = param.select;
 	var from = param.from;
 	var where = param.where;
@@ -901,9 +881,10 @@ function Parser(expression) {
   }
 
   /** set or get admin record
-   * {"action":"set|get", "psw":"...","config":{...}} --> ("status":"OK|...","config":{...}}
+   * {"action":"set|get", "psw":"oldPassword","config":{...}} --> ("status":"OK|...","config":{...}}
    * @param object param
    * @return object {"status":"OK|errorMsg", "config":{....}}
+   * config record: {"id":1, "enabled":["DNAHash",....], "psw":"...."};
    */ 
   function admin(param) {
 	  var action = param.action;
@@ -912,13 +893,17 @@ function Parser(expression) {
 	  var config = _getConfig();
 	  if (psw == config.psw) {
 		  if (action == 'set') {
+			  configEnabled = true;
 			  pConfig.recType = 'config';
-			  updateRecord(pConfig);
-			  return {"status":"OK","config":pConfig};
+			  var res = updateRecord(pConfig);
+			  configEnabled = false;
+			  return {"status":res.status,"config":pConfig};
 		  } else {
+			  configEnabled = false;
 			  return {"status":"OK","config":config};
 		  }
 	  } else {
+		  configEnabled = false;
 		  return {"status":"ACCESS_VIOLATION", "config":{}};
 	  }
   }

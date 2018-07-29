@@ -33,7 +33,7 @@
 				"select":["id","title"],
 				"from":"rec1",
 				"where":"(id > 0) AND (title <> \"\")",
-				"order":["none"],
+				"order":["id","DESC"],
 				"limit":[0,"all"]
 			},
             "Output": {"status":"OK", "total":2, "records":[[2,"title2"],[1,"title1"]]}
