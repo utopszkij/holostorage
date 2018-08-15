@@ -176,12 +176,24 @@ function validateLinkPkg(entry_type) { return null }
 		record.recType = 'config';
 		addRecord(record);
 		configEnabled = false; 
+	
+debug('_getConfig result 1');
+debug(record);	
+	
 		return record;
 	} else {
 		configEnabled = false; 
+	
+debug('_getConfig result 2');
+debug(record);	
+	
 		return res.record;
 	}	
 	configEnabled = false; 
+	
+debug('_getConfig result 3');
+debug(record);	
+	
 	return record; 
  }   
 

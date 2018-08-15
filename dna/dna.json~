@@ -23,9 +23,7 @@
             "RibosomeType": "js",
             "BridgeFuncs": [],
             "Config": null,
-            "BridgeFuncs": ["addRecord","getRecord","updateRecord",
-            					"deleteRecord","filterRecord","query", 
-            					"getRecordByKey", "login", "regist", "admin"],
+            "BridgeFuncs": ["addRecord","updateRecord","deleteRecord","filterRecord","admin"],
             "Entries": [
               {
                   "Name": "storage_links",
