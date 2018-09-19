@@ -2,6 +2,10 @@
 
 >status: pre-alpha
 
+Finish this project.
+I think this concept is wrong. Holochain DHT validation in this construct can not be achieved. :( :( :(
+
+
 #### [Hungarian readme](https://github.com/utopszkij/holostorage/blob/master/readme-hu.md) 
 
 ## 1. Overview
