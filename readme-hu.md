@@ -2,6 +2,10 @@
 
 >státusz: pre-alpha
 
+Projekt lezárva.
+Azt hiszem ez akoncepció nem jó. A holochain DHT validálás nem megoldható ebben a konstrukcióban.  :(  :(  :(
+
+
 [Angol nyelvű readmy](https://github.com/utopszkij/holostorage/blob/master/readme.md) 
 
 ## 1. Áttekintés
